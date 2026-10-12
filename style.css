@@ -1,0 +1,240 @@
+
+@font-face {
+    font-family: "Aurora Pro";
+    src: url("fonts/aurora-pro.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Alagard";
+    src: url("fonts/alagard.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #000;
+}
+
+#oracle {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+#card-wall {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 1.5s ease;
+}
+
+#card-wall.dimmed {
+    opacity: 0.25;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+    position: absolute;
+
+    /* Proportions du patron Canva */
+    width: 116px;
+    height: 210px;
+
+    left: 50%;
+    top: 50%;
+
+    margin-left: -58px;
+    margin-top: -105px;
+
+    overflow: hidden;
+    border-radius: 10px;
+    transform-style: preserve-3d;
+}
+
+.card-front,
+.card-back {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: inherit;
+}
+
+.card-front {
+    position: relative;
+    z-index: 1;
+}
+
+.card-back {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+/* =========================
+   PRESS SPACE
+========================= */
+
+#instruction {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    font-family: "Aurora Pro", sans-serif;
+    font-size: 48px;
+    font-weight: normal;
+    font-style: normal;
+    letter-spacing: 0.12em;
+    text-transform: none;
+
+    color: #d8d8d8;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+
+    z-index: 100;
+    pointer-events: none;
+
+    animation: ghostText 4s ease-in-out infinite;
+}
+
+@keyframes ghostText {
+    0% {
+        opacity: 0.15;
+    }
+
+    50% {
+        opacity: 0.85;
+    }
+
+    100% {
+        opacity: 0.15;
+    }
+}
+
+/* =========================
+   DARK OVERLAY
+========================= */
+
+#overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.65);
+    opacity: 0;
+    z-index: 20;
+
+    transition: opacity 1.5s ease;
+    pointer-events: none;
+}
+
+/* =========================
+   REVEALED CARD
+========================= */
+
+#reveal-card {
+    position: fixed;
+
+    left: 50%;
+    top: 50%;
+
+    /* Même ratio que les cartes du paquet */
+    width: 248px;
+    height: 448px;
+
+    transform: translate(-50%, -50%);
+    perspective: 1000px;
+
+    z-index: 30;
+}
+
+#reveal-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    transform-style: preserve-3d;
+    transform: rotateY(180deg);
+    transition: transform 1s ease;
+}
+
+#reveal-card.flipping #reveal-card-inner {
+    transform: rotateY(360deg);
+}
+
+.reveal-face,
+.reveal-back {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    border-radius: 10px;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.reveal-face {
+    transform: rotateY(0deg);
+}
+
+.reveal-back {
+    transform: rotateY(180deg);
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+#oracle-message {
+    position: fixed;
+
+    left: 50%;
+    top: calc(50% + 250px);
+
+    transform: translateX(-50%);
+
+    width: 80vw;
+    max-width: 600px;
+
+    text-align: center;
+
+    font-family: "Alagard", sans-serif;
+    font-size: 22px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.4;
+
+    color: #d8d8d8;
+    opacity: 0;
+
+    transition: opacity 0.5s ease;
+
+    z-index: 31;
+    pointer-events: none;
+}
